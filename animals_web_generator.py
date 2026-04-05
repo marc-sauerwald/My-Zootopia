@@ -31,52 +31,55 @@ def print_animal_info(animals_data):
 
 
 def generate_animals_html(animals_data):
-    """Generates a string with formatted animal information for HTML"""
+    """Generates HTML list items with formatted animal information"""
     output = ''
-    
+
     for animal in animals_data:
+        # Start list item
+        output += '<li class="cards__item">\n'
+
         # Name
         if "name" in animal:
-            output += f"Name: {animal['name']}\n"
+            output += f"Name: {animal['name']}<br/>\n"
 
         # Diet
         if "characteristics" in animal and "diet" in animal["characteristics"]:
-            output += f"Diet: {animal['characteristics']['diet']}\n"
+            output += f"Diet: {animal['characteristics']['diet']}<br/>\n"
 
         # First location
         if "locations" in animal and len(animal["locations"]) > 0:
-            output += f"Location: {animal['locations'][0]}\n"
+            output += f"Location: {animal['locations'][0]}<br/>\n"
 
         # Type
         if "characteristics" in animal and "type" in animal["characteristics"]:
-            output += f"Type: {animal['characteristics']['type']}\n"
+            output += f"Type: {animal['characteristics']['type']}<br/>\n"
 
-        # Empty line between animals
-        output += "\n"
-    
+        # End list item
+        output += '</li>\n'
+
     return output
 
 
 def generate_html_file(data_file, template_file, output_file):
     """Generates HTML file by replacing placeholder in template with animal data"""
-    
+
     # Load the animal data
     animals_data = load_data(data_file)
-    
+
     # Generate animals output string
     animals_output = generate_animals_html(animals_data)
-    
+
     # Read the HTML template
     with open(template_file, "r") as file:
         template_content = file.read()
-    
+
     # Replace placeholder with generated animals data
     html_content = template_content.replace("__REPLACE_ANIMALS_INFO__", animals_output)
-    
+
     # Write new HTML content to output file
     with open(output_file, "w") as file:
         file.write(html_content)
-    
+
     print(f"HTML file '{output_file}' generated successfully!")
 
 
