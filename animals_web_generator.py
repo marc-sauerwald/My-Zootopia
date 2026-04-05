@@ -31,28 +31,34 @@ def print_animal_info(animals_data):
 
 
 def generate_animals_html(animals_data):
-    """Generates HTML list items with formatted animal information"""
+    """Generates professional HTML list items with formatted animal information"""
     output = ''
 
     for animal in animals_data:
         # Start list item
         output += '<li class="cards__item">\n'
 
-        # Name
+        # Title (Name)
         if "name" in animal:
-            output += f"Name: {animal['name']}<br/>\n"
+            output += f'  <div class="card__title">{animal["name"]}</div>\n'
+
+        # Start paragraph with details
+        output += '  <p class="card__text">\n'
 
         # Diet
         if "characteristics" in animal and "diet" in animal["characteristics"]:
-            output += f"Diet: {animal['characteristics']['diet']}<br/>\n"
+            output += f'      <strong>Diet:</strong> {animal["characteristics"]["diet"]}<br/>\n'
 
         # First location
         if "locations" in animal and len(animal["locations"]) > 0:
-            output += f"Location: {animal['locations'][0]}<br/>\n"
+            output += f'      <strong>Location:</strong> {animal["locations"][0]}<br/>\n'
 
         # Type
         if "characteristics" in animal and "type" in animal["characteristics"]:
-            output += f"Type: {animal['characteristics']['type']}<br/>\n"
+            output += f'      <strong>Type:</strong> {animal["characteristics"]["type"]}<br/>\n'
+
+        # End paragraph
+        output += '  </p>\n'
 
         # End list item
         output += '</li>\n'
