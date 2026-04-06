@@ -1,10 +1,26 @@
 import json
+import requests
+
+API_KEY = 'evOMD61B0JJHmDBVO9z853788QtnZEGvYKQgciOv'
+API_URL = 'https://api.api-ninjas.com/v1/animals'
 
 
 def load_data(file_path):
     """Loads a JSON file"""
     with open(file_path, "r") as handle:
         return json.load(handle)
+
+
+def fetch_animals_from_api(animal_name):
+    """Fetches animal data from the API-Ninjas API"""
+    url = f"{API_URL}?name={animal_name}"
+    response = requests.get(url, headers={'X-Api-Key': API_KEY})
+
+    if response.status_code == requests.codes.ok:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code} - {response.json()}")
+        return []
 
 
 def serialize_animal(animal_obj):
@@ -60,33 +76,25 @@ def generate_animals_html(animals_data):
 def print_animal_info(animals_data):
     """Iterates through animals and prints the information to console"""
     for animal in animals_data:
-        # Name
         if "name" in animal:
             print(f"Name: {animal['name']}")
 
-        # Diet
         if ("characteristics" in animal and
                 "diet" in animal["characteristics"]):
             print(f"Diet: {animal['characteristics']['diet']}")
 
-        # First location
         if "locations" in animal and len(animal["locations"]) > 0:
             print(f"Location: {animal['locations'][0]}")
 
-        # Type
         if ("characteristics" in animal and
                 "type" in animal["characteristics"]):
             print(f"Type: {animal['characteristics']['type']}")
 
-        # Empty line between animals
         print()
 
 
-def generate_html_file(data_file, template_file, output_file):
+def generate_html_file(animals_data, template_file, output_file):
     """Generates HTML file by replacing placeholder in template"""
-
-    # Load the animal data
-    animals_data = load_data(data_file)
 
     # Generate animals output string
     animals_output = generate_animals_html(animals_data)
@@ -109,6 +117,8 @@ def generate_html_file(data_file, template_file, output_file):
 
 
 if __name__ == "__main__":
-    animals_data = load_data('animals_data.json')
+    # Fetch animals from API instead of JSON file
+    animals_data = fetch_animals_from_api("Fox")
+
     print_animal_info(animals_data)
-    generate_html_file('animals_data.json', 'animals_template.html', 'animals.html')
+    generate_html_file(animals_data, 'animals_template.html', 'animals.html')
