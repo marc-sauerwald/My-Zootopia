@@ -41,15 +41,16 @@ Open the generated `animals.html` file in your browser to view the results.
 
 ## Project Structure
 
-My-Zootopia/
-├── animals_web_generator.py   # Main script for generating the website
-├── data_fetcher.py            # Module for fetching data from the API
-├── animals_template.html      # HTML template file
-├── animals.html               # Generated output file
-├── requirements.txt           # Project dependencies
-├── .env                       # Environment variables (not tracked in git)
-├── .gitignore                 # Git ignore file
-└── README.md                  # This file
+| File | Description |
+|------|-------------|
+| `animals_web_generator.py` | Main script for generating the website |
+| `data_fetcher.py` | Module for fetching data from the API |
+| `animals_template.html` | HTML template file |
+| `animals.html` | Generated output file |
+| `requirements.txt` | Project dependencies |
+| `.env` | Environment variables (not tracked in git) |
+| `.gitignore` | Git ignore file |
+| `README.md` | This file |
 
 ## Dependencies
 
