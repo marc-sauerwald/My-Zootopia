@@ -27,37 +27,28 @@ def serialize_animal(animal_obj):
     """Serializes a single animal object to HTML list item format"""
     output = ''
 
-    # Start list item
     output += '<li class="cards__item">\n'
 
-    # Title (Name)
     if "name" in animal_obj:
         output += f'  <div class="card__title">{animal_obj["name"]}</div>\n'
 
-    # Start paragraph with details
     output += '  <p class="card__text">\n'
 
-    # Diet
     if ("characteristics" in animal_obj and
             "diet" in animal_obj["characteristics"]):
         diet = animal_obj["characteristics"]["diet"]
         output += f'      <strong>Diet:</strong> {diet}<br/>\n'
 
-    # First location
     if "locations" in animal_obj and len(animal_obj["locations"]) > 0:
         location = animal_obj["locations"][0]
         output += f'      <strong>Location:</strong> {location}<br/>\n'
 
-    # Type
     if ("characteristics" in animal_obj and
             "type" in animal_obj["characteristics"]):
         animal_type = animal_obj["characteristics"]["type"]
         output += f'      <strong>Type:</strong> {animal_type}<br/>\n'
 
-    # End paragraph
     output += '  </p>\n'
-
-    # End list item
     output += '</li>\n'
 
     return output
@@ -96,29 +87,28 @@ def print_animal_info(animals_data):
 def generate_html_file(animals_data, template_file, output_file):
     """Generates HTML file by replacing placeholder in template"""
 
-    # Generate animals output string
     animals_output = generate_animals_html(animals_data)
 
-    # Read the HTML template
     with open(template_file, "r") as file:
         template_content = file.read()
 
-    # Replace placeholder with generated animals data
     html_content = template_content.replace(
         "__REPLACE_ANIMALS_INFO__",
         animals_output
     )
 
-    # Write new HTML content to output file
     with open(output_file, "w") as file:
         file.write(html_content)
 
-    print(f"HTML file '{output_file}' generated successfully!")
-
 
 if __name__ == "__main__":
-    # Fetch animals from API instead of JSON file
-    animals_data = fetch_animals_from_api("Fox")
+    # Ask user for animal name
+    animal_name = input("Enter a name of an animal: ")
 
-    print_animal_info(animals_data)
+    # Fetch animals from API
+    animals_data = fetch_animals_from_api(animal_name)
+
+    # Generate the website
     generate_html_file(animals_data, 'animals_template.html', 'animals.html')
+
+    print("Website was successfully generated to the file animals.html.")
