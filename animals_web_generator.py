@@ -84,10 +84,14 @@ def print_animal_info(animals_data):
         print()
 
 
-def generate_html_file(animals_data, template_file, output_file):
+def generate_html_file(animals_data, animal_name, template_file, output_file):
     """Generates HTML file by replacing placeholder in template"""
 
-    animals_output = generate_animals_html(animals_data)
+    # Check if animals were found
+    if not animals_data:
+        animals_output = f'<h2 style="color: red; text-align: center;">The animal "{animal_name}" doesn\'t exist.</h2>'
+    else:
+        animals_output = generate_animals_html(animals_data)
 
     with open(template_file, "r") as file:
         template_content = file.read()
@@ -102,13 +106,10 @@ def generate_html_file(animals_data, template_file, output_file):
 
 
 if __name__ == "__main__":
-    # Ask user for animal name
     animal_name = input("Enter a name of an animal: ")
 
-    # Fetch animals from API
     animals_data = fetch_animals_from_api(animal_name)
 
-    # Generate the website
-    generate_html_file(animals_data, 'animals_template.html', 'animals.html')
+    generate_html_file(animals_data, animal_name, 'animals_template.html', 'animals.html')
 
     print("Website was successfully generated to the file animals.html.")
