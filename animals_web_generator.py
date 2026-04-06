@@ -1,26 +1,4 @@
-import json
-import requests
-
-API_KEY = 'evOMD61B0JJHmDBVO9z853788QtnZEGvYKQgciOv'
-API_URL = 'https://api.api-ninjas.com/v1/animals'
-
-
-def load_data(file_path):
-    """Loads a JSON file"""
-    with open(file_path, "r") as handle:
-        return json.load(handle)
-
-
-def fetch_animals_from_api(animal_name):
-    """Fetches animal data from the API-Ninjas API"""
-    url = f"{API_URL}?name={animal_name}"
-    response = requests.get(url, headers={'X-Api-Key': API_KEY})
-
-    if response.status_code == requests.codes.ok:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code} - {response.json()}")
-        return []
+import data_fetcher
 
 
 def serialize_animal(animal_obj):
@@ -64,30 +42,9 @@ def generate_animals_html(animals_data):
     return output
 
 
-def print_animal_info(animals_data):
-    """Iterates through animals and prints the information to console"""
-    for animal in animals_data:
-        if "name" in animal:
-            print(f"Name: {animal['name']}")
-
-        if ("characteristics" in animal and
-                "diet" in animal["characteristics"]):
-            print(f"Diet: {animal['characteristics']['diet']}")
-
-        if "locations" in animal and len(animal["locations"]) > 0:
-            print(f"Location: {animal['locations'][0]}")
-
-        if ("characteristics" in animal and
-                "type" in animal["characteristics"]):
-            print(f"Type: {animal['characteristics']['type']}")
-
-        print()
-
-
 def generate_html_file(animals_data, animal_name, template_file, output_file):
     """Generates HTML file by replacing placeholder in template"""
 
-    # Check if animals were found
     if not animals_data:
         animals_output = f'<h2 style="color: red; text-align: center;">The animal "{animal_name}" doesn\'t exist.</h2>'
     else:
@@ -106,9 +63,9 @@ def generate_html_file(animals_data, animal_name, template_file, output_file):
 
 
 if __name__ == "__main__":
-    animal_name = input("Enter a name of an animal: ")
+    animal_name = input("Please enter an animal: ")
 
-    animals_data = fetch_animals_from_api(animal_name)
+    animals_data = data_fetcher.fetch_data(animal_name)
 
     generate_html_file(animals_data, animal_name, 'animals_template.html', 'animals.html')
 
